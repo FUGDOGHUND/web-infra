@@ -27,3 +27,12 @@ docker rm -f $(docker ps -aq)
 ```
 ansible-playbook -i inventory.ini deploy.yml
 ```
+
+1. Полная очистка окружения
+```bash
+
+docker-compose -f /tmp/docker-compose.yml down -v
+docker system prune -a --volumes
+sudo rm -rf /tmp/docker-compose.yml
+
+```
