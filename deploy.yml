@@ -1,0 +1,41 @@
+---
+- name: Deploy web infrastructure with Docker
+  hosts: all
+  become: yes
+  vars:
+    web_port: 8080
+
+  tasks:
+    - name: Install Docker and dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - docker.io
+        - docker-compose
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Copy Nginx configuration
+      copy:
+        src: nginx.conf
+        dest: /tmp/nginx.conf
+        mode: '0644'
+
+    - name: Copy Docker Compose file
+      copy:
+        src: docker-compose.yml
+        dest: /tmp/docker-compose.yml
+        mode: '0644'
+
+    - name: Start containers with Docker Compose
+      command: docker-compose -f /tmp/docker-compose.yml up -d
