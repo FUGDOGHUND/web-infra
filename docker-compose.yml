@@ -5,14 +5,15 @@ services:
     image: confluentinc/cp-zookeeper:7.4.1
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     healthcheck:
       test: ["CMD", "zkServer.sh", "status"]
       interval: 10s
       timeout: 5s
-      retries: 3
+      start_period: 20s
 
   kafka:
-    image: confluentinc/cp-kafka:7.4.1
+    image: confluentinc/cp-kafka:6.2.0
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -22,9 +23,11 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms256M"
     healthcheck:
-      test: ["CMD", "kafka-topics", "--list", "--bootstrap-server", "localhost:9092"]
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list || exit 1"]
       interval: 10s
-      timeout: 5s
-      retries: 3
+      timeout: 20s
+      start_period: 40s

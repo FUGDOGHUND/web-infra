@@ -23,3 +23,7 @@ docker-compose -f /tmp/docker-compose.yml up -d --force-recreate
 docker-compose -f /tmp/docker-compose.yml down --remove-orphans
 docker rm -f $(docker ps -aq)
 ```
+
+```
+ansible-playbook -i inventory.ini deploy.yml
+```
