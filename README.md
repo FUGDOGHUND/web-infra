@@ -9,16 +9,17 @@ sudo apt install -y ansible
 PostgreSQL будет доступен внутри Docker-сети
 Kafka будет доступна на порту 9092
 5. Запуск с принудительным пересозданием
-bash
-Copy
+```bash
+
 
 docker-compose -f /tmp/docker-compose.yml up -d --force-recreate
-
+```
 
     Остановите и удалите все текущие контейнеры:
 
-bash
-Copy
+```bash
+
 
 docker-compose -f /tmp/docker-compose.yml down --remove-orphans
 docker rm -f $(docker ps -aq)
+```
