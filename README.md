@@ -1,38 +1,26 @@
-# web-infra
+# Web Infra Deployment
+
+## 📦 Состав инфраструктуры:
+- **NGINX** (веб-сервер)
+- **PHP-FPM** (бэкенд)
+- **PostgreSQL** (база данных)
+- **Kafka + ZooKeeper** (брокеры сообщений)
+- Всё разворачивается с помощью **Ansible + Docker Compose**
+
+## 📂 Структура проекта:
+```
+web-infra/
+├── inventory.ini        # Ansible inventory (локальный хост)
+├── deploy.yml           # Ansible playbook
+├── docker-compose.yml   # Инфраструктура
+├── nginx.conf           # Конфигурация NGINX
+├── index.html           # Простая веб-страница
+└── kafka-data/          # Данные Kafka (автоматически создается)
+```
+
+## 🚀 Развёртывание
 ```bash
-sudo apt update
-sudo apt install -y ansible
-```
-После выполнения:
-
-Веб-приложение будет доступно на http://localhost:8080
-PostgreSQL будет доступен внутри Docker-сети
-Kafka будет доступна на порту 9092
-5. Запуск с принудительным пересозданием
-```bash
-
-
-docker-compose -f /tmp/docker-compose.yml up -d --force-recreate
-```
-
-    Остановите и удалите все текущие контейнеры:
-
-```bash
-
-
-docker-compose -f /tmp/docker-compose.yml down --remove-orphans
-docker rm -f $(docker ps -aq)
-```
-
-```
 ansible-playbook -i inventory.ini deploy.yml
 ```
 
-1. Полная очистка окружения
-```bash
-
-docker-compose -f /tmp/docker-compose.yml down -v
-docker system prune -a --volumes
-sudo rm -rf /tmp/docker-compose.yml
-
-```
+Проект поднимет все нужные сервисы на локальной машине.
