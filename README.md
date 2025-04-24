@@ -9,6 +9,7 @@
 
 ## 📂 Структура проекта:
 ```
+http://localhost
 web-infra/
 ├── inventory.ini        # Ansible inventory (локальный хост)
 ├── deploy.yml           # Ansible playbook
